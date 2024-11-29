@@ -14,7 +14,8 @@ public class WishlistTests extends AbstractTest {
         homePage.open();
         homePage.login("test_user@example.com", "StrongPassword123!");
 
-        homePage.navigateToCategory("Womens Tops");
+        // Change to use correct category path
+        homePage.navigateToCategory("Women > Tops > Jackets");
         ProductPage productPage = homePage.selectFirstProduct();
         productPage.addToWishlist();
 
@@ -29,6 +30,7 @@ public class WishlistTests extends AbstractTest {
         homePage.open();
         homePage.login("test_user@example.com", "StrongPassword123!");
 
+        // Navigate directly to wishlist without category navigation
         WishlistPage wishlistPage = homePage.navigateToWishlist();
         int initialCount = wishlistPage.getWishlistItemCount();
 
@@ -45,12 +47,15 @@ public class WishlistTests extends AbstractTest {
         homePage.open();
         homePage.login("test_user@example.com", "StrongPassword123!");
 
+        // Store initial count for comparison
         WishlistPage wishlistPage = homePage.navigateToWishlist();
+        int initialCount = wishlistPage.getWishlistItemCount();
 
-        if (wishlistPage.getWishlistItemCount() > 0) {
+        if (initialCount > 0) {
             wishlistPage.addItemToCart(0);
 
-            Assert.assertTrue(wishlistPage.getWishlistItemCount() < wishlistPage.getWishlistItemCount(),
+            // Fix the comparison logic
+            Assert.assertTrue(wishlistPage.getWishlistItemCount() < initialCount,
                     "Item not moved from wishlist to cart");
         }
     }

@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class HomePage extends BasePage {
     @FindBy(css = ".logo")
@@ -51,17 +52,40 @@ public class HomePage extends BasePage {
         // Wait for menu to be visible and clickable
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
-        // First find and hover over the main category to expose sub-categories
-        ExtendedWebElement mainCategory = findExtendedWebElement(By.cssSelector(".nav-sections"));
-        mainCategory.hover();
+        // Split category path
+        String[] categories = categoryName.split(" > ");
 
-        // Then find and click the specific category using a more robust XPath
-        ExtendedWebElement categoryLink = findExtendedWebElement(By.xpath(
-                String.format("//nav[@class='navigation']//a[contains(., '%s')]", categoryName)
-        ));
+        // Navigate through each level
+        for (int i = 0; i < categories.length; i++) {
+            String category = categories[i];
 
-        // Add explicit wait before clicking
-        categoryLink.click();
+            if (i == 0) {
+                // First level navigation
+                String xpath = String.format("//nav[@class='navigation']//li[contains(@class, 'level0')]//a[contains(@class, 'level-top')]/span[contains(text(), '%s')]/parent::a", category);
+                ExtendedWebElement menuItem = findExtendedWebElement(By.xpath(xpath));
+                menuItem.hover();
+
+                if (categories.length == 1) {
+                    menuItem.click();
+                }
+            } else {
+                // Submenu navigation
+                String xpath = String.format("//nav[@class='navigation']//li[contains(@class, 'level%d')]//a/span[contains(text(), '%s')]/parent::a", i, category);
+                ExtendedWebElement menuItem = findExtendedWebElement(By.xpath(xpath));
+                menuItem.hover();
+
+                if (i == categories.length - 1) {
+                    menuItem.click();
+                }
+            }
+
+            // Wait for submenu to be visible
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 
     // Added method to select first product
