@@ -3,6 +3,7 @@ package com.magento.pages;
 
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -140,7 +141,15 @@ public class HomePage extends BasePage {
 
     // Added method to navigate to wishlist
     public WishlistPage navigateToWishlist() {
-        ExtendedWebElement wishlistLink = findExtendedWebElement(By.cssSelector(".wishlist"));
+        // Wait for element to be present and clickable
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+
+        // Use a more specific selector that includes the link
+        ExtendedWebElement wishlistLink = findExtendedWebElement(
+                By.cssSelector(".link.wishlist a")
+        );
+        ExtendedWebElement userDropDown = findExtendedWebElement(By.cssSelector(".action.switch"));
+        userDropDown.click();
         wishlistLink.click();
         return new WishlistPage(getDriver());
     }
