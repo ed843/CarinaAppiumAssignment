@@ -12,15 +12,13 @@ public class ProductTests extends AbstractTest {
         homePage.open();
 
         // Navigate to a specific product category
-        homePage.navigateToCategory("Mens Jackets");
+        homePage.navigateToCategory("Women > Tops > Jackets");
 
         ProductPage productPage = homePage.selectFirstProduct();
         productPage.selectSize("M");
         productPage.selectColor("Blue");
         productPage.addToCart();
-
-        CartPage cartPage = new CartPage(getDriver());
-        Assert.assertTrue(cartPage.isProductInCart(), "Product not added to cart");
+        Assert.assertTrue(productPage.isProductInCart(), "Product not added to cart");
     }
 
     @Test(description = "Verify adding product to wishlist")
@@ -31,7 +29,7 @@ public class ProductTests extends AbstractTest {
         // Ensure user is logged in
         homePage.login("test_user@example.com", "StrongPassword123!");
 
-        homePage.navigateToCategory("Womens Tops");
+        homePage.navigateToCategory("Women > Tops");
         ProductPage productPage = homePage.selectFirstProduct();
         productPage.addToWishlist();
 
@@ -45,13 +43,13 @@ public class ProductTests extends AbstractTest {
         HomePage homePage = new HomePage(getDriver());
         homePage.open();
 
-        homePage.navigateToCategory("Mens Jackets");
+        homePage.navigateToCategory("Women > Tops > Jackets");
 
         // Add multiple products to comparison
         ProductPage firstProduct = homePage.selectFirstProduct();
         firstProduct.addToCompare();
 
-        homePage.navigateToCategory("Mens Jackets");
+        homePage.navigateToCategory("Women > Tops > Jackets");
         ProductPage secondProduct = homePage.selectSecondProduct();
         secondProduct.addToCompare();
 

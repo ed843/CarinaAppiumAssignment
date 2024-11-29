@@ -156,8 +156,10 @@ public class HomePage extends BasePage {
 
     // Added method to navigate to compare products
     public CompareProductsPage navigateToCompareProducts() {
-        ExtendedWebElement compareLink = findExtendedWebElement(By.cssSelector(".compare-link"));
-        compareLink.click();
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+
+        ExtendedWebElement compareLink = findExtendedWebElement(By.cssSelector(".action.compare"));
+        js.executeScript("arguments[0].click();", compareLink.getElement());
         return new CompareProductsPage(getDriver());
     }
 }

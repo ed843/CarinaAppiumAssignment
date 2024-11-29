@@ -20,20 +20,25 @@ public class ProductPage extends BasePage {
     @FindBy(css = ".action.towishlist")
     private ExtendedWebElement addToWishlistButton;
 
-    @FindBy(css = ".swatch-option")
+    @FindBy(css = ".swatch-option.text")
     private List<ExtendedWebElement> sizeOptions;
 
-    @FindBy(css = ".swatch-color")
+    @FindBy(css = ".swatch-option.color")
     private List<ExtendedWebElement> colorOptions;
+
+    @FindBy(css = ".counter-number")
+    private ExtendedWebElement counterNumber;
 
     public ProductPage(WebDriver driver) {
         super(driver);
     }
 
     public void selectSize(String size) {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+
         for (ExtendedWebElement sizeOption : sizeOptions) {
             if (sizeOption.getText().equalsIgnoreCase(size)) {
-                sizeOption.click();
+                js.executeScript("arguments[0].click();", sizeOption.getElement());
                 return;
             }
         }
@@ -41,9 +46,14 @@ public class ProductPage extends BasePage {
     }
 
     public void selectColor(String color) {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
         for (ExtendedWebElement colorOption : colorOptions) {
-            if (colorOption.getAttribute("data-option-label").equalsIgnoreCase(color)) {
-                colorOption.click();
+            // Use title attribute instead of data-option-label
+            String colorValue = colorOption.getAttribute("option-label");
+
+
+            if (colorValue != null && colorValue.equalsIgnoreCase(color)) {
+                js.executeScript("arguments[0].click();", colorOption.getElement());
                 return;
             }
         }
@@ -51,11 +61,15 @@ public class ProductPage extends BasePage {
     }
 
     public void addToCart() {
-        addToCartButton.click();
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click();", addToCartButton.getElement());
+    }
+
+    public boolean isProductInCart() {
+        return counterNumber.isDisplayed();
     }
 
     public void addToWishlist() {
-        // Method 1: Using JavaScript Executor
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].click();", addToWishlistButton.getElement());
     }
@@ -63,6 +77,7 @@ public class ProductPage extends BasePage {
     // Added method for adding to compare
     public void addToCompare() {
         ExtendedWebElement compareButton = findExtendedWebElement(By.cssSelector(".action.tocompare"));
-        compareButton.click();
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click();", compareButton.getElement());
     }
 }

@@ -19,7 +19,7 @@ public class CheckoutTests extends AbstractTest {
         loginPage.login("test_user@example.com", "StrongPassword123!");
 
         // Add product to cart
-        homePage.navigateToCategory("Mens Jackets");
+        homePage.navigateToCategory("Women > Tops > Jackets");
         ProductPage productPage = homePage.selectFirstProduct();
         productPage.selectSize("M");
         productPage.selectColor("Blue");
@@ -51,11 +51,11 @@ public class CheckoutTests extends AbstractTest {
         homePage.login("test_user@example.com", "StrongPassword123!");
 
         // Add multiple products to cart
-        homePage.navigateToCategory("Mens Jackets");
+        homePage.navigateToCategory("Men > Tops > Jackets");
         ProductPage firstProduct = homePage.selectFirstProduct();
         firstProduct.addToCart();
 
-        homePage.navigateToCategory("Womens Tops");
+        homePage.navigateToCategory("Women > Tops > Jackets");
         ProductPage secondProduct = homePage.selectFirstProduct();
         secondProduct.addToCart();
 
