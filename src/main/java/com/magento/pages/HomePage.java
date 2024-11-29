@@ -2,10 +2,9 @@ package com.magento.pages;
 
 
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -88,11 +87,39 @@ public class HomePage extends BasePage {
         }
     }
 
-    // Added method to select first product
     public ProductPage selectFirstProduct() {
-        ExtendedWebElement firstProduct = findExtendedWebElement(By.cssSelector(".product-item"));
-        firstProduct.click();
-        return new ProductPage(getDriver());
+        // Wait for product to be visible and clickable
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+
+        // Find the first product with a more specific selector
+        ExtendedWebElement firstProduct = findExtendedWebElement(
+                By.cssSelector(".product-item-info .product-item-link")
+        );
+
+        try {
+            // First try scrolling into view
+            ((JavascriptExecutor) getDriver()).executeScript(
+                    "arguments[0].scrollIntoView(true);",
+                    firstProduct.getElement()
+            );
+
+            // Wait for element to be clickable
+            wait.until(ExpectedConditions.elementToBeClickable(firstProduct.getElement()));
+
+            // Try clicking with JavaScript if normal click fails
+            try {
+                firstProduct.click();
+            } catch (ElementClickInterceptedException e) {
+                ((JavascriptExecutor) getDriver()).executeScript(
+                        "arguments[0].click();",
+                        firstProduct.getElement()
+                );
+            }
+
+            return new ProductPage(getDriver());
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to click first product: " + e.getMessage());
+        }
     }
 
     // Added method to select second product

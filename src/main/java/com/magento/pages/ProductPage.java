@@ -2,8 +2,11 @@ package com.magento.pages;
 
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
@@ -52,7 +55,9 @@ public class ProductPage extends BasePage {
     }
 
     public void addToWishlist() {
-        addToWishlistButton.click();
+        // Method 1: Using JavaScript Executor
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click();", addToWishlistButton.getElement());
     }
 
     // Added method for adding to compare
