@@ -3,6 +3,7 @@ package com.magento.pages;
 
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -36,7 +37,9 @@ public class HomePage extends BasePage {
 
     public void search(String query) {
         searchInput.type(query);
-        searchInput.submit();
+        searchInput.sendKeys(Keys.ENTER);
+        // Or find and click the search button explicitly
+        // searchButton.click();
     }
 
     public LoginPage clickLogin() {
