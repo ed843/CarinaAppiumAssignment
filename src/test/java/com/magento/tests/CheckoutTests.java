@@ -48,19 +48,25 @@ public class CheckoutTests extends AbstractTest {
         homePage.login("test_user@example.com", "StrongPassword123!");
 
         // Add multiple products to cart
-        homePage.navigateToCategory("Men > Tops > Jackets");
-        ProductPage firstProduct = homePage.selectFirstProduct();
+        homePage.navigateToCategory("Women > Tops > Jackets");
+        ProductPage firstProduct = homePage.selectSecondProduct();
+        firstProduct.selectSize("XS");
+        firstProduct.selectColor("Blue");
         firstProduct.addToCart();
 
         homePage.navigateToCategory("Women > Tops > Jackets");
         ProductPage secondProduct = homePage.selectFirstProduct();
+        secondProduct.selectSize("S");
+        secondProduct.selectColor("Blue");
         secondProduct.addToCart();
 
         // Proceed to checkout
-        CartPage cartPage = new CartPage(getDriver());
-        cartPage.proceedToCheckout();
+        CheckoutPage checkoutPage = secondProduct.navigateToCheckout();
 
-        CheckoutPage checkoutPage = new CheckoutPage(getDriver());
+        checkoutPage.selectShippingAddress("105 Example Drive", "Starkville", "Mississippi", "39759", "8392019283");
+        checkoutPage.selectShippingMethod("Standard Shipping");
+        checkoutPage.selectPaymentMethod("Credit Card");
+
         checkoutPage.placeOrder();
 
         Assert.assertTrue(checkoutPage.isOrderConfirmed(),

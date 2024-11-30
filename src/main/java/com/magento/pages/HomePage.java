@@ -125,12 +125,37 @@ public class HomePage extends BasePage {
 
     // Added method to select second product
     public ProductPage selectSecondProduct() {
-        List<ExtendedWebElement> products = findExtendedWebElements(By.cssSelector(".product-item"));
-        if (products.size() > 1) {
-            products.get(1).click();
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+
+        // Find the first product with a more specific selector
+        List<ExtendedWebElement> products = findExtendedWebElements(
+                By.cssSelector(".product-item-info .product-item-link")
+        );
+
+        try {
+            // First try scrolling into view
+            ((JavascriptExecutor) getDriver()).executeScript(
+                    "arguments[0].scrollIntoView(true);",
+                    products.get(1).getElement()
+            );
+
+            // Wait for element to be clickable
+            wait.until(ExpectedConditions.elementToBeClickable(products.get(1).getElement()));
+
+            // Try clicking with JavaScript if normal click fails
+            try {
+                products.get(1).click();
+            } catch (ElementClickInterceptedException e) {
+                ((JavascriptExecutor) getDriver()).executeScript(
+                        "arguments[0].click();",
+                        products.get(1).getElement()
+                );
+            }
+
             return new ProductPage(getDriver());
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to click first product: " + e.getMessage());
         }
-        throw new RuntimeException("Not enough products to select second product");
     }
 
     // Added login method
