@@ -26,13 +26,10 @@ public class CheckoutTests extends AbstractTest {
         productPage.addToCart();
 
         // Proceed to checkout
-        CartPage cartPage = new CartPage(getDriver());
-        cartPage.proceedToCheckout();
-
-        CheckoutPage checkoutPage = new CheckoutPage(getDriver());
+        CheckoutPage checkoutPage = productPage.navigateToCheckout();
 
         // Fill checkout details
-        checkoutPage.selectShippingAddress("Default");
+        checkoutPage.selectShippingAddress("105 Example Drive", "Starkville", "Mississippi", "39759", "8392019283");
         checkoutPage.selectShippingMethod("Standard Shipping");
         checkoutPage.selectPaymentMethod("Credit Card");
 

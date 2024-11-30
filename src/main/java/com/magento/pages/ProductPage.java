@@ -80,4 +80,13 @@ public class ProductPage extends BasePage {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].click();", compareButton.getElement());
     }
+
+    public CheckoutPage navigateToCheckout() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        ExtendedWebElement cartButton = findExtendedWebElement(By.cssSelector(".action.showcart"));
+        js.executeScript("arguments[0].click();", cartButton.getElement());
+        ExtendedWebElement proceedToCheckout = findExtendedWebElement(By.cssSelector("#top-cart-btn-checkout"));
+        js.executeScript("arguments[0].click();", proceedToCheckout.getElement());
+        return new CheckoutPage(getDriver());
+    }
 }
