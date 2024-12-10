@@ -2,7 +2,9 @@ package com.saucelabs.pages.android;
 
 import com.saucelabs.enums.FilterOption;
 import com.saucelabs.enums.Product;
+import com.saucelabs.pages.android.components.NavigationBar;
 import com.saucelabs.pages.common.LoginPageBase;
+import com.saucelabs.pages.common.ProductDetailsPageBase;
 import com.saucelabs.pages.common.ProductPageBase;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
@@ -12,6 +14,9 @@ import org.openqa.selenium.support.FindBy;
 
 @DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = ProductPageBase.class)
 public class ProductPage extends ProductPageBase {
+
+    @FindBy(xpath = "//android.widget.FrameLayout[@resource-id=\"android:id/content\"]/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[1]")
+    private NavigationBar navigationBar;
 
     @FindBy(xpath="//android.widget.TextView[@text=\"PRODUCTS\"]")
     private ExtendedWebElement title;
@@ -31,11 +36,11 @@ public class ProductPage extends ProductPageBase {
     }
 
     @Override
-    public ProductDetailsPage clickOnProduct(Product productName) {
+    public ProductDetailsPageBase clickOnProduct(Product productName) {
         String xpath = "//android.widget.TextView[@content-desc=\"test-Item title\" and @text=\"" + productName.getValue() + "\"]/..";
         ExtendedWebElement productCard = findExtendedWebElement(By.xpath(xpath));
         productCard.click();
-        return initPage(getDriver(), ProductDetailsPage.class);
+        return initPage(getDriver(), ProductDetailsPageBase.class);
     }
 
     @Override
@@ -60,6 +65,11 @@ public class ProductPage extends ProductPageBase {
         String xpath = "//android.widget.TextView[@text=\"" + option.getValue() + "\"]";
         ExtendedWebElement sortButton = findExtendedWebElement(By.xpath(xpath));
         sortButton.click();
+    }
+
+    @Override
+    public NavigationBar getNavigationBar() {
+        return navigationBar;
     }
 
 

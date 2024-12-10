@@ -13,6 +13,9 @@ public class LoginPage extends LoginPageBase implements IMobileUtils {
     @FindBy(xpath="//android.view.ViewGroup[@content-desc=\"test-Error message\"]")
     private ExtendedWebElement errorMessage;
 
+    @FindBy(xpath="//android.widget.ImageView")
+    private ExtendedWebElement loginLogo;
+
     @FindBy(xpath="//android.widget.EditText[@content-desc=\"test-Username\"]")
     ExtendedWebElement usernameField;
 
@@ -38,6 +41,11 @@ public class LoginPage extends LoginPageBase implements IMobileUtils {
     @Override
     public boolean isErrorMessagePresent() {
         return errorMessage.isElementPresent();
+    }
+
+    @Override
+    public boolean isLoginPagePresent() {
+        return loginButton.isElementPresent();
     }
 
     @Override

@@ -21,6 +21,8 @@ public class ProductDetailsPage extends ProductDetailsPageBase implements IMobil
     @FindBy(xpath="//android.widget.TextView[@text=\"REMOVE\"]")
     ExtendedWebElement removeButton;
 
+    @FindBy(className = "android.widget.ScrollView")
+    ExtendedWebElement scrollableContainer;
 
     public ProductDetailsPage(WebDriver driver) {
         super(driver);
@@ -34,6 +36,8 @@ public class ProductDetailsPage extends ProductDetailsPageBase implements IMobil
 
     @Override
     public void addToCart() {
+
+        swipe(addToCartButton, scrollableContainer, 10);
         addToCartButton.click();
     }
 

@@ -8,7 +8,7 @@ public abstract class LoginPageBase extends AbstractPage {
     public LoginPageBase(WebDriver driver) {
         super(driver);
     }
-
+    public abstract boolean isLoginPagePresent();
     public abstract boolean isErrorMessagePresent();
     public abstract void typeUsername(String name);
     public abstract void typePassword(String password);
